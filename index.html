@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>document </title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <form class="calculator" name="cal">
+      <input type="text" readonly class="value" name="text" />
+      <span class="num clear">C</span>
+      <span class="num">/</span>
+      <span class="num">*</span>
+      <span class="num">7</span>
+      <span class="num">8</span>
+      <span class="num">9</span>
+      <span class="num">-</span>
+      <span class="num">4</span>
+      <span class="num">5</span>
+      <span class="num">6</span>
+      <span class="num plus">+</span>
+      <span class="num">1</span>
+      <span class="num">2</span>
+      <span class="num">3</span>
+      <span class="num">0</span>
+      <span class="num">00</span>
+      <span class="num">.</span>
+      <span class="num equal">=</span>
+    </form>
+  </div>
+
+  <script>
+
+    const container = document.querySelector('.container');
+    container.addEventListener('mousemove', (e) => {
+      const rect = container.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left - rect.width / 2;
+      const offsetY = e.clientY - rect.top - rect.height / 2;
+      const rotateX = -(offsetY / 10);
+      const rotateY = offsetX / 10;
+      container.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      container.style.boxShadow = `${rotateY}px ${rotateX}px 50px rgba(0,0,0,0.5)`;
+    });
+    container.addEventListener('mouseleave', () => {
+      container.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)';
+      container.style.boxShadow = '0px 0px 30px rgba(0,0,0,0.3)';
+    });
+
+   
+    const display = document.querySelector('.value');
+    const buttons = document.querySelectorAll('.calculator .num');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.textContent;
+        if (btn.classList.contains('clear')) {
+          display.value = '';
+        } else if (btn.classList.contains('equal')) {
+          try {
+            display.value = eval(display.value) || '';
+          } catch {
+            display.value = 'خطا';
+          }
+        } else {
+          display.value += key;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
